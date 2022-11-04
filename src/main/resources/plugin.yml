@@ -1,0 +1,9 @@
+name: SP_Wallet
+version: '${project.version}'
+main: SPWallet.SPWallet
+api-version: 1.19
+authors: [ Gnaris ]
+commands:
+  wallet:
+  spwallet:
+depend: [SP_Database, SP_GroupManager]
