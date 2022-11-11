@@ -1,62 +1,47 @@
 package Entity;
 
-import Model.Thread.UpdatePlayerWalletThread;
-import net.md_5.bungee.api.ChatColor;
+import Model.Thread.UpdatePlayerWalletBalanceThread;
 import org.bukkit.entity.Player;
 
 public class Wallet {
 
     private final Player owner;
-    private int money;
+    private long balance;
     private boolean visible;
 
-    public Wallet(Player owner, int money, boolean visible) {
+    public Wallet(Player owner, long money, boolean visible) {
         this.owner = owner;
-        this.money = money;
+        this.balance = money;
         this.visible = visible;
     }
 
-    public void countMoney()
+    public void add(long amount)
     {
-        this.owner.sendMessage(ChatColor.of("#C5D2DC") + "Votre bourse : " + this.money + "$");
+        this.balance += amount;
+        new Thread(new UpdatePlayerWalletBalanceThread(owner)).start();
     }
-
-    public void showMoney(Player whoever)
+    public void remove(long amount)
     {
-        whoever.sendMessage(ChatColor.of("#C5D2DC") + "Bourse de " + this.owner.getName() + " : " + this.money + "$");
+        this.balance -= amount;
+        new Thread(new UpdatePlayerWalletBalanceThread(owner)).start();
     }
-
-    public void add(int amount)
+    public void set(long amount)
     {
-        this.money += amount;
-        Thread UpdatePlayerWallet = new Thread(new UpdatePlayerWalletThread(this.owner));
-        UpdatePlayerWallet.start();
-    }
-    public void remove(int amount)
-    {
-        this.money -= amount;
-        Thread UpdatePlayerWallet = new Thread(new UpdatePlayerWalletThread(this.owner));
-        UpdatePlayerWallet.start();
-    }
-    public void set(int amount)
-    {
-        this.money = amount;
-        Thread UpdatePlayerWallet = new Thread(new UpdatePlayerWalletThread(this.owner));
-        UpdatePlayerWallet.start();
+        this.balance = amount;
+        new Thread(new UpdatePlayerWalletBalanceThread(owner)).start();
     }
 
 
     public Player getOwner() {
         return this.owner;
     }
-    public int getMoney() {
-        return money;
+    public long getBalance() {
+        return balance;
     }
     public boolean isVisible() {
         return visible;
     }
-    public void setVisible(String arg) {
-        if(arg.equalsIgnoreCase("on")) this.visible = true;
-        if(arg.equalsIgnoreCase("off")) this.visible = false;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

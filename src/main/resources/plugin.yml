@@ -6,4 +6,4 @@ authors: [ Gnaris ]
 commands:
   wallet:
   spwallet:
-depend: [SP_Database, SP_GroupManager]
+depend: [SP_Database]
