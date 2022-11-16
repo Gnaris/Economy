@@ -17,19 +17,24 @@ import java.sql.SQLException;
 
 public class PlayerInstance implements Listener{
 
+    private final SPWallet plugin;
+
+    public PlayerInstance(SPWallet plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler (priority = EventPriority.NORMAL)
     public void onJoin(PlayerJoinEvent e) throws SQLException, ClassNotFoundException {
-        if(SPWallet.getInstance().getWalletStore().getWalletList().get(e.getPlayer().getUniqueId()) == null)
+        if(plugin.getWalletStore().get(e.getPlayer().getUniqueId()) == null)
         {
-            SPWallet.getInstance().getWalletStore().getWalletList().put(e.getPlayer().getUniqueId(), new WalletModel(e.getPlayer()).getPlayerWallet());
+            plugin.getWalletStore().put(e.getPlayer().getUniqueId(), new WalletModel().getPlayerWallet(e.getPlayer().getUniqueId().toString()));
         }
     }
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onLeave(PlayerQuitEvent e) throws SQLException, ClassNotFoundException {
-        Thread updatePlayerWalletBalanceThread = new Thread(new UpdatePlayerWalletBalanceThread(e.getPlayer()));
-        updatePlayerWalletBalanceThread.start();
-        Thread updatePlayerWalletVisibleThread = new Thread(new UpdatePlayerWalletVisibleThread(e.getPlayer()));
-        updatePlayerWalletVisibleThread.start();
+        Wallet playerWallet = plugin.getWalletStore().get(e.getPlayer().getUniqueId());
+        new Thread(new UpdatePlayerWalletBalanceThread(playerWallet.getBalance(), e.getPlayer().getUniqueId().toString())).start();
+        new Thread(new UpdatePlayerWalletVisibleThread(playerWallet.isVisible(), e.getPlayer().getUniqueId().toString())).start();
     }
 }

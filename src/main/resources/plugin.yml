@@ -1,9 +1,13 @@
 name: SP_Wallet
-version: '${project.version}'
+version: 1.0
 main: SPWallet.SPWallet
 api-version: 1.19
 authors: [ Gnaris ]
+
+depend: [SP_Database]
 commands:
   wallet:
   spwallet:
-depend: [SP_Database]
+permissions:
+  sperias.wallet.command.spwallet:
+    description: "Manage money"

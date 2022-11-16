@@ -8,27 +8,28 @@ import org.bukkit.entity.Player;
 
 public class WalletController  extends Controller {
 
-    public WalletController(Player player) {
-        super(player);
+
+    public WalletController(Player player, SPWallet plugin) {
+        super(player, plugin);
     }
 
     public boolean canGetBalance()
     {
-        player.sendMessage("Bourse : " + playerWallet.getBalance() + SPWallet.getInstance().getConfig().getString("symbol"));
+        player.sendMessage("Bourse : " + playerWallet.getBalance() + config.getString("symbol"));
         return true;
     }
 
     public boolean canWatchWallet(Player target)
     {
         if(!this.existingTarget(target)) return false;
-        Wallet targetWallet = SPWallet.getInstance().getWalletStore().getWalletList().get(target.getUniqueId());
+        Wallet targetWallet = plugin.getWalletStore().get(target.getUniqueId());
         if(!targetWallet.isVisible())
         {
             player.sendMessage("§cVous n'avez pas l'autorisation de voir sa bourse");
             return false;
         }
 
-        player.sendMessage("Bourse de " + target.getName() + " : " + targetWallet.getBalance() + SPWallet.getInstance().getConfig().getString("symbol"));
+        player.sendMessage("Bourse de " + target.getName() + " : " + targetWallet.getBalance() + config.getString("symbol"));
         return true;
     }
 
@@ -39,7 +40,6 @@ public class WalletController  extends Controller {
             player.sendMessage("§cON ou OFF");
             return false;
         }
-
         if(value.equalsIgnoreCase("on"))
         {
             player.sendMessage("§aTout le monde pourra voir votre bourse :D");
@@ -48,7 +48,6 @@ public class WalletController  extends Controller {
         {
             player.sendMessage("§cPlus personne pourra voir votre bourse :D");
         }
-        new Thread(new UpdatePlayerWalletVisibleThread(player)).start();
         return true;
     }
 
@@ -64,12 +63,12 @@ public class WalletController  extends Controller {
 
         if((playerWallet.getBalance() - Long.parseLong(amount)) < 0)
         {
-            player.sendMessage("§cComment tu veux payer " + amount + SPWallet.getInstance().getConfig().getString("symbol") + " à " + target.getName() + " alors que tu as " + this.playerWallet.getBalance() + SPWallet.getInstance().getConfig().getString("symbol") + " ?");
+            player.sendMessage("§cComment tu veux payer " + amount + config.getString("symbol") + " à " + target.getName() + " alors que tu as " + playerWallet.getBalance() + config.getString("symbol") + " ?");
             return false;
         }
 
-        player.sendMessage("§aVous avez envoyé à " + target.getName() + " " + Long.parseLong(amount) + SPWallet.getInstance().getConfig().getString("symbol") + "$");
-        target.sendMessage("§aVous avez reçu " + Long.parseLong(amount) + SPWallet.getInstance().getConfig().getString("symbol") + " de la part de " + player.getName());
+        player.sendMessage("§aVous avez envoyé à " + target.getName() + " " + Long.parseLong(amount) + config.getString("symbol") + "$");
+        target.sendMessage("§aVous avez reçu " + Long.parseLong(amount) + config.getString("symbol") + " de la part de " + player.getName());
         return true;
     }
 }

@@ -1,45 +1,40 @@
 package Model;
 
 import Entity.Wallet;
-import SPWallet.SPWallet;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import sperias.gnaris.SPDatabase.SPDatabase;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class WalletModel {
 
-    protected Player player;
-    protected Wallet playerWallet;
+    private SPDatabase database = (SPDatabase) Bukkit.getServer().getPluginManager().getPlugin("SP_Database");
 
-    public WalletModel(Player player) {
-        this.player = player;
-        this.playerWallet = SPWallet.getInstance().getWalletStore().getWalletList().get(player.getUniqueId());
-    }
-
-    public Wallet getPlayerWallet() throws SQLException, ClassNotFoundException {
-        PreparedStatement stmt = SPWallet.getSperiasDatabase().prepareStatement("SELECT p.id, p.uuid, pw.amount, pw.visible FROM player p JOIN player_wallet pw ON pw.playerID = p.id WHERE uuid = ?");
-        stmt.setString(1, player.getUniqueId().toString());
+    public Wallet getPlayerWallet(String uuid) throws SQLException, ClassNotFoundException {
+        PreparedStatement stmt = database.getConnection().prepareStatement("SELECT uuid, balance, visible FROM player WHERE uuid = ?");
+        stmt.setString(1, uuid);
         ResultSet result = stmt.executeQuery();
         Wallet wallet = null;
         while (result.next())
         {
-            wallet = new Wallet(player, result.getLong("amount"), result.getBoolean("visible"));
+            wallet = new Wallet(Bukkit.getPlayer(UUID.fromString(result.getString("uuid"))), result.getLong("balance"), result.getBoolean("visible"));
         }
         return wallet;
     }
-    public void updateWalletBalance(Wallet playerWallet) throws SQLException, ClassNotFoundException {
-        PreparedStatement stmt = SPWallet.getSperiasDatabase().prepareStatement("UPDATE player_wallet pw JOIN player p ON p.id = pw.playerID SET pw.amount = ? WHERE p.uuid = ?");
-        stmt.setLong(1, playerWallet.getBalance());
-        stmt.setString(2, SPWallet.getInstance().getWalletStore().getWalletList().get(player.getUniqueId()).getOwner().getUniqueId().toString());
+    public void updateWalletBalance(long balance, String uuid) throws SQLException, ClassNotFoundException {
+        PreparedStatement stmt = database.getConnection().prepareStatement("UPDATE player SET balance = ? WHERE uuid = ?");
+        stmt.setLong(1, balance);
+        stmt.setString(2, uuid);
         stmt.executeUpdate();
     }
 
-    public void updateWalletVisible(Wallet playerWallet) throws SQLException, ClassNotFoundException {
-        PreparedStatement stmt = SPWallet.getSperiasDatabase().prepareStatement("UPDATE player_wallet pw JOIN player p ON p.id = pw.playerID SET pw.visible = ? WHERE p.uuid = ?");
-        stmt.setBoolean(1, playerWallet.isVisible());
-        stmt.setString(2, playerWallet.getOwner().getUniqueId().toString());
+    public void updateWalletVisible(boolean visible, String uuid) throws SQLException, ClassNotFoundException {
+        PreparedStatement stmt = database.getConnection().prepareStatement("UPDATE player SET visible = ? WHERE uuid = ?");
+        stmt.setBoolean(1, visible);
+        stmt.setString(2, uuid);
         stmt.executeUpdate();
     }
 }

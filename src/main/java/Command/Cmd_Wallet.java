@@ -9,19 +9,22 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
-import java.util.UUID;
-
 public class Cmd_Wallet implements CommandExecutor {
+
+    private SPWallet plugin;
+
+    public Cmd_Wallet(SPWallet plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
             if(!(sender instanceof Player)) return false;
 
             Player player = (Player) sender;
-            Wallet playerWallet = SPWallet.getInstance().getWalletStore().getWalletList().get(player.getUniqueId());
-            Map<UUID, Wallet> walletList = SPWallet.getInstance().getWalletStore().getWalletList();
-            WalletController walletController = new WalletController(player);
+            Wallet playerWallet = plugin.getWalletStore().get(player.getUniqueId());
+            WalletController walletController = new WalletController(player, plugin);
 
             if(args.length == 0)
             {
@@ -59,7 +62,7 @@ public class Cmd_Wallet implements CommandExecutor {
                     if(!walletController.canPay(target, args[2])) return false;
                     long balance = Long.parseLong(args[2]);
                     playerWallet.remove(balance);
-                    walletList.get(target.getUniqueId()).add(balance);
+                    plugin.getWalletStore().get(target.getUniqueId()).add(balance);
                 }
             }
 
