@@ -1,22 +1,18 @@
 package Controller;
 
-import Entity.Wallet;
-import SPWallet.SPWallet;
-import org.bukkit.configuration.file.FileConfiguration;
+import Economy.EconomyPlugin;
+import Model.EconomyModel;
 import org.bukkit.entity.Player;
 
 public abstract class Controller{
 
     protected Player player;
-    protected Wallet playerWallet;
-    protected SPWallet plugin;
-    protected FileConfiguration config;
+    protected EconomyPlugin plugin;
+    protected EconomyModel economyModel = new EconomyModel();
 
-    public Controller(Player player, SPWallet plugin) {
+    public Controller(Player player, EconomyPlugin plugin) {
         this.player = player;
         this.plugin = plugin;
-        this.playerWallet = plugin.getWalletStore().get(player.getUniqueId());
-        this.config = plugin.getConfig();
     }
 
     protected boolean existingTarget(Player target)
@@ -30,7 +26,7 @@ public abstract class Controller{
         return true;
     }
 
-    protected boolean isLongFormat(String amount)
+    protected boolean isGoodFormat(String amount)
     {
         try{
             Long.parseLong(amount);

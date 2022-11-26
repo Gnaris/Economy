@@ -1,13 +1,15 @@
-name: SP_Wallet
+name: Economy
 version: 1.0
-main: SPWallet.SPWallet
+main: Economy.EconomyPlugin
 api-version: 1.19
 authors: [ Gnaris ]
-
 depend: [SP_Database]
 commands:
-  wallet:
-  spwallet:
+  money:
+    aliases: [balance, wallet]
+  pay:
+  economy:
+    aliases: [eco]
 permissions:
-  sperias.wallet.command.spwallet:
+  sperias.wallet.command.economy:
     description: "Manage money"
