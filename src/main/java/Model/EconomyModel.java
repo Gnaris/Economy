@@ -1,8 +1,8 @@
 package Model;
 
 import Entity.Economy;
+import chn.gnaris.database.DatabaseAPI;
 import org.bukkit.Bukkit;
-import sperias.gnaris.SPDatabase.SPDatabase;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +11,7 @@ import java.util.UUID;
 
 public class EconomyModel {
 
-    private SPDatabase database = (SPDatabase) Bukkit.getServer().getPluginManager().getPlugin("SP_Database");
-
+    private DatabaseAPI database = (DatabaseAPI) Bukkit.getServer().getPluginManager().getPlugin("Database");
     public Economy getPlayerEconomy(String uuid) throws SQLException, ClassNotFoundException {
         PreparedStatement stmt = database.getConnection().prepareStatement("SELECT uuid, balance, visible FROM player WHERE uuid = ?");
         stmt.setString(1, uuid);

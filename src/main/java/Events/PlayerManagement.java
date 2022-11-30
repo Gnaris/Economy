@@ -1,19 +1,18 @@
 package Events;
 
 import Model.EconomyModel;
-import Economy.EconomyPlugin;
+import Economy.EconomyAPI;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.sql.SQLException;
 
 public class PlayerManagement implements Listener{
 
-    private final EconomyPlugin plugin;
+    private final EconomyAPI plugin;
 
-    public PlayerManagement(EconomyPlugin plugin) {
+    public PlayerManagement(EconomyAPI plugin) {
         this.plugin = plugin;
     }
 

@@ -1,13 +1,13 @@
 package Command.Controller;
 
 import Controller.Controller;
-import Economy.EconomyPlugin;
+import Economy.EconomyAPI;
 import org.bukkit.entity.Player;
 
 public class EconomyController extends Controller {
 
 
-    public EconomyController(Player player, EconomyPlugin plugin) {
+    public EconomyController(Player player, EconomyAPI plugin) {
         super(player, plugin);
     }
 

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class EconomyPlugin extends JavaPlugin {
+public class EconomyAPI extends JavaPlugin {
 
     private final Map<UUID, Economy> economies = new HashMap<>();
 
