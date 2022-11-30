@@ -1,8 +1,7 @@
 package Entity;
 
-import java.util.UUID;
-import Economy.EconomyPlugin;
 import Model.EconomyModel;
+import java.util.UUID;
 
 public class Economy {
 

@@ -1,19 +1,18 @@
 package Command;
 
 import Command.Controller.EconomyController;
-import Economy.EconomyPlugin;
+import Economy.EconomyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class Cmd_Economy implements CommandExecutor {
 
-    private EconomyPlugin plugin;
+    private EconomyAPI plugin;
 
-    public Cmd_Economy(EconomyPlugin plugin) {
+    public Cmd_Economy(EconomyAPI plugin) {
         this.plugin = plugin;
     }
 

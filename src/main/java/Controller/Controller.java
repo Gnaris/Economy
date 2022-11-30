@@ -1,16 +1,16 @@
 package Controller;
 
-import Economy.EconomyPlugin;
+import Economy.EconomyAPI;
 import Model.EconomyModel;
 import org.bukkit.entity.Player;
 
 public abstract class Controller{
 
     protected Player player;
-    protected EconomyPlugin plugin;
+    protected EconomyAPI plugin;
     protected EconomyModel economyModel = new EconomyModel();
 
-    public Controller(Player player, EconomyPlugin plugin) {
+    public Controller(Player player, EconomyAPI plugin) {
         this.player = player;
         this.plugin = plugin;
     }

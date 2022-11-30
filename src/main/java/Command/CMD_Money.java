@@ -1,7 +1,7 @@
 package Command;
 
 import Command.Controller.MoneyController;
-import Economy.EconomyPlugin;
+import Economy.EconomyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 
 public class CMD_Money implements CommandExecutor {
 
-    private EconomyPlugin plugin;
+    private EconomyAPI plugin;
 
-    public CMD_Money(EconomyPlugin plugin) {
+    public CMD_Money(EconomyAPI plugin) {
         this.plugin = plugin;
     }
 

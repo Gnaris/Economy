@@ -1,9 +1,9 @@
 name: Economy
 version: 1.0
-main: Economy.EconomyPlugin
-api-version: 1.19
+main: Economy.EconomyAPI
+api-version: 1.17
 authors: [ Gnaris ]
-depend: [SP_Database]
+depend: [Database]
 commands:
   money:
     aliases: [balance, wallet]
